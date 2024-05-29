@@ -2,8 +2,7 @@ package tpe;
 
 import tpe.utils.CSVReader;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * NO modificar la interfaz de esta clase ni sus métodos públicos.
@@ -12,46 +11,61 @@ import java.util.List;
  */
 public class Servicios {
 
-	/*
-     * Expresar la complejidad temporal del constructor.
-     */
-
 	private List<Procesador> procesadores;
-	private List<Tarea>tareas;
+	private HashMap<String,Tarea>tareas;
 
-	public Servicios(String pathProcesadores, String pathTareas)//Complejidad O(n) n siendo la cantidad de tareas y procesadores
+	private List<Tarea> tareasCriticas;
+	private List<Tarea> tareasNoCriticas;
+
+	/*
+	 * Complejidad O(n) n siendo la cantidad de tareas y procesadores
+	 */
+
+	public Servicios(String pathProcesadores, String pathTareas)
 	{
 		this.procesadores=new ArrayList<>();//O(1)
-		this.tareas=new ArrayList<>();//O(1)
-		CSVReader reader = new CSVReader();//O(1)
+		this.tareasCriticas = new ArrayList<>();
+		this.tareasNoCriticas = new ArrayList<>();
+		CSVReader reader = new CSVReader();//O
 		procesadores.addAll(reader.readProcessors(pathProcesadores));//O(p)
-		tareas.addAll(reader.readTasks(pathTareas));//O(t)
+		tareas.putAll(reader.readTasks(pathTareas));
+		addCriticasyNocriticas(tareas);
 
+
+	}
+	public void addCriticasyNocriticas(HashMap<String,Tarea>t){
+		for (Map.Entry<String, Tarea> entry : tareas.entrySet()){
+			Tarea tarea = entry.getValue();
+			if (tarea.Es_critica()){
+				tareasCriticas.add(tarea);
+			}
+			else {
+				tareasNoCriticas.add(tarea);
+			}
+		}
 	}
 	
 	/*
      * Expresar la complejidad temporal del servicio 1.
      */
 	public Tarea servicio1(String ID) {//O(n) donde n son las tareas y en el peor de los casos recorres toda la lista
-		for (Tarea t:tareas) {
-			if (t.getId_tarea().equalsIgnoreCase(ID)){
-				return t;
-			}
+		if(tareas.containsKey(ID)) {
+			return tareas.get(ID);
 		}
-        return null;
+		return null;
     }
     
     /*
-     * Expresar la complejidad temporal del servicio 2.
+     * //O(n) donde n son las tareas y puede
+     * q todas sean criticas o no criticas segun lo q se busca
      */
-	public List<Tarea> servicio2(boolean esCritica) {//O(n) donde n son las tareas y puede q todas sean criticas o no criticas segun lo q se busca
+	public List<Tarea> servicio2(boolean esCritica) {
 
 		List<Tarea>tareasBuscadas=new ArrayList<>();
-
-		for (Tarea t:tareas) {
-			if (t.Es_critica()==esCritica){
-				tareasBuscadas.add(t);
-			}
+		if(esCritica){
+			tareasBuscadas.addAll(tareasCriticas);
+		}else {
+			tareasBuscadas.addAll(tareasNoCriticas);
 		}
         return tareasBuscadas;
     }
@@ -63,7 +77,8 @@ public class Servicios {
 
 		List<Tarea>tareasBuscadas=new ArrayList<>();
 
-		for (Tarea t:tareas) {
+		for (Map.Entry<String, Tarea> entry : tareas.entrySet()){
+			Tarea t = entry.getValue();
 			if (t.getNivel_prioridad()>=prioridadInferior && t.getNivel_prioridad()<=prioridadSuperior){
 				tareasBuscadas.add(t);
 			}
@@ -71,13 +86,5 @@ public class Servicios {
         return tareasBuscadas;
     }
 
-	public void agregarTarea(Tarea t){
-		if (t!=null && !tareas.contains(t))
-			tareas.add(t);
-	}
-	public void agregarProcesador(Procesador p){
-		if (p!=null && !procesadores.contains(p))
-			procesadores.add(p);
-	}
 
 }

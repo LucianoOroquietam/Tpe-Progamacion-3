@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -18,7 +19,8 @@ public class CSVReader {
 	public CSVReader() {
 	}
 	
-	public List<Tarea> readTasks(String taskPath) {
+	public HashMap<String,Tarea> readTasks(String taskPath) {
+		HashMap<String,Tarea> tareaHashMap = new HashMap<>();
 		List<Tarea>tareas=new ArrayList<>();
 		// Obtengo una lista con las lineas del archivo
 		// lines.get(0) tiene la primer linea del archivo
@@ -33,10 +35,14 @@ public class CSVReader {
 			Boolean critica = Boolean.parseBoolean(line[3].trim());
 			Integer prioridad = Integer.parseInt(line[4].trim());
 			// Aca instanciar lo que necesiten en base a los datos leidos
-			tareas.add(new Tarea(id,nombre,tiempo,critica,prioridad));
+			Tarea tarea = new Tarea(id,nombre,tiempo,critica,prioridad);
+			tareas.add(tarea);
+			tareaHashMap.put(id,tarea);
+
 		}
-		return tareas;
+		return tareaHashMap;
 	}
+
 	
 public List<Procesador> readProcessors(String processorPath) {
 
