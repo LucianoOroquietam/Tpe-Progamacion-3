@@ -10,6 +10,8 @@ public class Main {
 		//System.out.println(servicios.servicio1("T8"));
 
 		//System.out.println(servicios.servicio2(false));
-		System.out.println(servicios.servicio3(1,20));
+		//System.out.println(servicios.servicio3(1,20));
+
+		System.out.println(servicios.servicio2(false));
 	}
 }

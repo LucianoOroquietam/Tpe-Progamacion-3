@@ -26,6 +26,7 @@ public class Servicios {
 		this.procesadores=new ArrayList<>();//O(1)
 		this.tareasCriticas = new ArrayList<>();
 		this.tareasNoCriticas = new ArrayList<>();
+		this.tareas = new HashMap<>();
 		CSVReader reader = new CSVReader();//O
 		procesadores.addAll(reader.readProcessors(pathProcesadores));//O(p)
 		tareas.putAll(reader.readTasks(pathTareas));
@@ -48,7 +49,7 @@ public class Servicios {
 	/*
      * Expresar la complejidad temporal del servicio 1.
      */
-	public Tarea servicio1(String ID) {//O(n) donde n son las tareas y en el peor de los casos recorres toda la lista
+	public Tarea servicio1(String ID) {//O(1)
 		if(tareas.containsKey(ID)) {
 			return tareas.get(ID);
 		}
@@ -61,13 +62,10 @@ public class Servicios {
      */
 	public List<Tarea> servicio2(boolean esCritica) {
 
-		List<Tarea>tareasBuscadas=new ArrayList<>();
 		if(esCritica){
-			tareasBuscadas.addAll(tareasCriticas);
-		}else {
-			tareasBuscadas.addAll(tareasNoCriticas);
+			return this.tareasCriticas;
 		}
-        return tareasBuscadas;
+        return this.tareasNoCriticas;
     }
 
     /*
