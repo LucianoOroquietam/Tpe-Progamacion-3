@@ -84,5 +84,15 @@ public class Servicios {
         return tareasBuscadas;
     }
 
+	//implementar solucion con backtraking
+
+	public Solucion back(){
+		return null;
+	}
+
+	public Solucion gready(){
+		return null;
+	}
+
 
 }
