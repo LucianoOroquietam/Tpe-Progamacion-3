@@ -13,14 +13,16 @@ public class Solucion {
 
 
     //asigna una tarea a un procesador (solucion parcial)
-    public void asignarTarea(Procesador p, Tarea t){
+    public void asignarTarea(Procesador p, Tarea t, int x){
         //si el procesador no tiene lista de areas (osea es un procesador nuevo) creo una lista para ese procesador
         if(!asignaciones.containsKey(p)){
 
             asignaciones.put(p.getCodigo_procesador(),new ArrayList<>());
         }
-        //si el procesador ya tiene una lista , directamente agrego la tarea a su lista
-        this.asignaciones.get(p.getCodigo_procesador()).add(t);
+        // Si ese procesador ya tenia una lista de tareas asignadas, y es asignable, le agrego la tarea
+        if (esAsignable(p, t, x)) {
+            asignaciones.get(p.getCodigo_procesador()).add(t);
+        }
     }
     //quita una tarea a un procesador (solucion parcial)
     public void removerTarea(Procesador p, Tarea t){
@@ -51,4 +53,36 @@ public class Solucion {
         }
         return tiempo;
     }
+
+
+    //Comprueba si a un procesador se le puede asignar cierta tarea
+    public boolean esAsignable(Procesador procesador, Tarea tarea, int x){
+        if (procesador.Esta_refrigerado() && tarea.getTiempo_ejecucion() > x){
+            return false;
+        }
+
+        if (tarea.Es_critica()  &&  getCantCriticas(procesador.getCodigo_procesador()) >= 2){
+            return false;
+        }
+
+        return true;
+    }
+
+    private int getCantCriticas(String id){
+        int cantidad = 0;
+        for (Tarea tarea : this.asignaciones.get(id)) {
+            if (tarea.Es_critica()){
+                cantidad++;
+            }
+        }
+
+        return cantidad;
+    }
+
+
+
+
+
+
+
 }
