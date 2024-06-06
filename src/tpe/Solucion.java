@@ -2,7 +2,14 @@ package tpe;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+/*
+* Primero, ningún procesador podrá ejecutar más de 2 tareas críticas.
+*Segundo, los procesadores no refrigerados no podrán dedicar más de X tiempo de ejecución a
+las tareas asignadas. El tiempo X será un parámetro establecido por el usuario al momento de
+solicitar la asignación de las tareas a los procesadores.
 
+*
+* */
 public class Solucion {
 
     private HashMap<String, ArrayList<Tarea>> asignaciones;
