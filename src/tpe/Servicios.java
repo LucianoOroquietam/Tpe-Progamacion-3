@@ -57,8 +57,8 @@ public class Servicios {
     }
     
     /*
-     * //O(n) donde n son las tareas y puede
-     * q todas sean criticas o no criticas segun lo q se busca
+     * //o(1)
+     * donde si es critica o no critica directamente la retorna
      */
 	public List<Tarea> servicio2(boolean esCritica) {
 
@@ -69,7 +69,7 @@ public class Servicios {
     }
 
     /*
-     * Expresar la complejidad temporal del servicio 3.
+     * o(n)
      */
 	public List<Tarea> servicio3(int prioridadInferior, int prioridadSuperior) {
 
