@@ -14,8 +14,11 @@ public class Servicios {
 	private List<Procesador> procesadores;
 	private HashMap<String,Tarea>tareas;
 
+	private List<Tarea> listaTareas;
+
 	private List<Tarea> tareasCriticas;
 	private List<Tarea> tareasNoCriticas;
+	private SolucionBacktracking mejorSolucionBack;
 
 	/*
 	 * Complejidad O(n) n siendo la cantidad de tareas y procesadores
@@ -27,10 +30,15 @@ public class Servicios {
 		this.tareasCriticas = new ArrayList<>();
 		this.tareasNoCriticas = new ArrayList<>();
 		this.tareas = new HashMap<>();
+		this.listaTareas=new ArrayList<>();
+
 		CSVReader reader = new CSVReader();//O
 		procesadores.addAll(reader.readProcessors(pathProcesadores));//O(p)
 		tareas.putAll(reader.readTasks(pathTareas));
 		addCriticasyNocriticas(tareas);
+		addListaTareas();
+
+		this.mejorSolucionBack = new SolucionBacktracking(this.procesadores);
 
 
 	}
@@ -43,6 +51,13 @@ public class Servicios {
 			else {
 				tareasNoCriticas.add(tarea);
 			}
+		}
+	}
+
+	public void addListaTareas(){
+		for (Map.Entry<String, Tarea> entry : tareas.entrySet()){
+			Tarea tarea = entry.getValue();
+			listaTareas.add(tarea);
 		}
 	}
 	
@@ -86,11 +101,43 @@ public class Servicios {
 
 	//implementar solucion con backtraking
 
-	public Solucion back(){
-		return null;
+	public SolucionBacktracking back(int tiempoMaximo){
+		System.out.println("comienzo del Backtracking:");
+		int posicion=0;
+		//crear solucion parcial para llamar a la recursividad
+
+		SolucionBacktracking solucionParcial=new SolucionBacktracking(procesadores);
+
+		backtracking(solucionParcial,posicion,tiempoMaximo);
+
+        return solucionParcial.copiarSolucion();//devuelve la copia de la solucion parcial
 	}
 
-	public Solucion gready(){
+	private void backtracking(SolucionBacktracking solucion, int posicion, int tiempoMaximo){
+
+		if (posicion==listaTareas.size()){//si ya asigne todas mis tareas, empiezo a chequear las soluciones
+			System.out.println("2");
+			if (solucion.calcularTiempoTotal()< mejorSolucionBack.calcularTiempoTotal()|| mejorSolucionBack.calcularTiempoTotal()==0){
+				System.out.println("3");
+				this.mejorSolucionBack=solucion.copiarSolucion();
+			}
+			//si es valida comparar con mi mejor solucion
+			//si es mejor q la q tenia, la copio y se vuelve mi mejor solucion
+			return;
+		}else {
+			for (Procesador p:procesadores) {
+				System.out.println("1");
+				solucion.asignarTarea(p,listaTareas.get(posicion),tiempoMaximo);
+				backtracking(solucion,posicion+1,tiempoMaximo);
+				solucion.removerTarea(p,listaTareas.get(posicion));
+			}
+
+		}
+
+	}
+
+
+	public SolucionBacktracking greedy(){
 		return null;
 	}
 

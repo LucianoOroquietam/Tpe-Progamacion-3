@@ -3,18 +3,3 @@ P2;AMD Ryzen 5 3600;false;2019
 P3;Intel i9-11900K;true;2021
 P4;AMD Ryzen 7 3700X;true;2019
 P5;Intel i5-10600K;false;2020
-P6;AMD Ryzen 9 3950X;true;2019
-P7;Intel i3-10100;false;2020
-P8;AMD Ryzen 3 3200G;false;2019
-P9;Intel Xeon E-2276M;true;2019
-P10;AMD EPYC 7742;true;2019
-P11;Intel Pentium Gold G5400;false;2018
-P12;AMD Athlon 3000G;false;2019
-P13;Intel i7-8700K;true;2017
-P14;AMD Ryzen Threadripper 3990X;true;2020
-P15;Intel i5-9600K;false;2018
-P16;AMD Ryzen 5 2600;false;2018
-P17;Intel i9-9900K;true;2018
-P18;AMD Ryzen 7 5800X;true;2020
-P19;Intel i3-8100;false;2017
-P20;AMD FX-8350;false;2012
