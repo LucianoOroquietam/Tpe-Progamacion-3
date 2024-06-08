@@ -31,11 +31,9 @@ public class SolucionBacktracking {
 
 
     //asigna una tarea a un procesador (solucion parcial)
-    public void asignarTarea(Procesador p, Tarea t, int x) {
+    public void asignarTarea(Procesador p, Tarea t) {
         // Si ese procesador ya tenia una lista de tareas asignadas, y es asignable, le agrego la tarea
-        if (esAsignable(p, t, x)) {
             solucion.get(p).add(t);
-        }
     }
 
     //quita una tarea a un procesador (solucion parcial)
@@ -44,40 +42,47 @@ public class SolucionBacktracking {
     }
 
     //calcula el tiempo maximo de ejecucion de la solucion
-    public float calcularTiempoTotal() {
-        float tiempoTotal = 0, maximoTiempo = 0;
+    public float calcularTiempoTotal(){
 
-        for (Procesador key : solucion.keySet()) {
-            //resetea tiempo total para que el tiempo sea individual por cada procesador
-            tiempoTotal = 0;
-            tiempoTotal += calcularTiempoTareas(key);
-            if (tiempoTotal > maximoTiempo) {
-                maximoTiempo = tiempoTotal;
-            }
+        float tiempoMax = 0;
+        for(Procesador p : this.procesadores) {
+
+            float tiempoAcumulado = 0;
+            List<Tarea> tareas = this.solucion.get(p);
+            for (Tarea t : tareas)
+                tiempoAcumulado += t.getTiempo_ejecucion();
+
+            if (tiempoAcumulado > tiempoMax)
+                tiempoMax = tiempoAcumulado;
         }
 
-        return tiempoTotal;
-    }
-
-
-    private float calcularTiempoTareas(Procesador p) {
-        ArrayList<Tarea> tareas = this.solucion.get(p);
-        float tiempo = 0.0f;
-        for (Tarea tarea : tareas) {
-            tiempo += tarea.getTiempo_ejecucion();
-        }
-        return tiempo;
+        return tiempoMax;
     }
 
 
     //Comprueba si a un procesador se le puede asignar cierta tarea
-    public boolean esAsignable(Procesador procesador, Tarea tarea, int x) {
-        if (!procesador.Esta_refrigerado() && tarea.getTiempo_ejecucion() > x) {
-            return false;
-        }
+    public boolean esValida(int x) {
+        for(Procesador p : this.procesadores){
 
-        if (tarea.Es_critica() && getCantCriticas(procesador) >= 2) {
-            return false;
+            List<Tarea> tareas = this.solucion.get(p);
+            int critCount = 0;
+            int tiempoAcumulado = 0;
+
+            for(Tarea t : tareas){
+
+                if(t.Es_critica())
+                    critCount++;
+
+                tiempoAcumulado += t.getTiempo_ejecucion();
+
+                if(critCount >= 2)
+                    return false;
+
+                if(!p.Esta_refrigerado() && tiempoAcumulado >= x)
+                    return false;
+
+            }
+
         }
 
         return true;
@@ -108,10 +113,11 @@ public class SolucionBacktracking {
 
         return nuevaSolucion;
     }
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
+        sb.append("posible solucion: ");
+        sb.append("\n");
         for (Map.Entry<Procesador, ArrayList<Tarea>> entry : solucion.entrySet()) {
             Procesador procesador = entry.getKey();
             ArrayList<Tarea> tareas = entry.getValue();
@@ -120,7 +126,7 @@ public class SolucionBacktracking {
             for (Tarea tarea : tareas) {
                 sb.append("\t").append(tarea.getId_tarea()).append(" (Tiempo: ").append(tarea.getTiempo_ejecucion()).append(", Crítica: ").append(tarea.Es_critica()).append(")\n");
             }
-            sb.append("Tiempo total de la solucion: ").append(calcularTiempoTotal());
+            sb.append("Tiempo total de tareas : ").append(calcularTiempoTotal());
             sb.append("\n");
         }
         return sb.toString();

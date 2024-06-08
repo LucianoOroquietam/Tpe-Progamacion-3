@@ -19,6 +19,7 @@ public class Servicios {
 	private List<Tarea> tareasCriticas;
 	private List<Tarea> tareasNoCriticas;
 	private SolucionBacktracking mejorSolucionBack;
+	private List<Float>todosLostiempos;
 
 	/*
 	 * Complejidad O(n) n siendo la cantidad de tareas y procesadores
@@ -31,6 +32,7 @@ public class Servicios {
 		this.tareasNoCriticas = new ArrayList<>();
 		this.tareas = new HashMap<>();
 		this.listaTareas=new ArrayList<>();
+		this.todosLostiempos=new ArrayList<>();
 
 		CSVReader reader = new CSVReader();//O
 		procesadores.addAll(reader.readProcessors(pathProcesadores));//O(p)
@@ -110,31 +112,37 @@ public class Servicios {
 
 		backtracking(solucionParcial,posicion,tiempoMaximo);
 
-        return solucionParcial.copiarSolucion();//devuelve la copia de la solucion parcial
+		System.out.println(this.todosLostiempos);
+        return mejorSolucionBack;//devuelve la copia de la solucion parcial
 	}
 
 	private void backtracking(SolucionBacktracking solucion, int posicion, int tiempoMaximo){
 
 		if (posicion==listaTareas.size()){//si ya asigne todas mis tareas, empiezo a chequear las soluciones
-			System.out.println("2");
-			if (solucion.calcularTiempoTotal()< mejorSolucionBack.calcularTiempoTotal()|| mejorSolucionBack.calcularTiempoTotal()==0){
-				System.out.println("3");
-				this.mejorSolucionBack=solucion.copiarSolucion();
+
+			if(solucion.esValida(tiempoMaximo)) {
+				if (solucion.calcularTiempoTotal() < mejorSolucionBack.calcularTiempoTotal() || mejorSolucionBack.calcularTiempoTotal() == 0) {
+
+					this.mejorSolucionBack = solucion.copiarSolucion();
+
+				}
 			}
 			//si es valida comparar con mi mejor solucion
 			//si es mejor q la q tenia, la copio y se vuelve mi mejor solucion
 			return;
-		}else {
+		}
 			for (Procesador p:procesadores) {
-				System.out.println("1");
-				solucion.asignarTarea(p,listaTareas.get(posicion),tiempoMaximo);
+
+
+				solucion.asignarTarea(p,listaTareas.get(posicion));
 				backtracking(solucion,posicion+1,tiempoMaximo);
+				//todosLostiempos.add(solucion.calcularTiempoTotal());
 				solucion.removerTarea(p,listaTareas.get(posicion));
 			}
 
 		}
 
-	}
+
 
 
 	public SolucionBacktracking greedy(){

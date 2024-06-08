@@ -3,18 +3,4 @@ T2;Actualizar base de datos de clientes;45;false;20
 T3;Implementar sistema de autenticación;120;true;100
 T4;Optimizar consultas SQL;80;true;90
 T5;Configurar servidor de pruebas;30;false;60
-T6;Desarrollar funcionalidad de reporte;100;true;85
-T7;Realizar pruebas unitarias;50;false;75
-T8;Migrar datos a la nueva base de datos;110;true;30
-T9;Diseñar interfaz de usuario;70;false;65
-T10;Escribir documentación del API;40;false;55
-T11;Revisar logs de errores;25;true;80
-T12;Realizar copias de seguridad;20;false;50
-T13;Implementar cache en el servidor;90;true;1
-T14;Desplegar aplicación en producción;60;true;10
-T15;Crear script de automatización;45;false;68
-T16;Actualizar dependencias del proyecto;35;false;63
-T17;Monitorear rendimiento del sistema;75;true;15
-T18;Realizar pruebas de carga;85;false;73
-T19;Corregir bugs críticos;95;true;99
-T20;Configurar entorno de desarrollo;55;false;34
+T6;Desarrollar funcionalidad de reporte;100;false;85

@@ -14,7 +14,7 @@ public class Main {
 
 		//System.out.println(servicios.servicio2(false));
 
-		System.out.println(servicios.back(120));
+		System.out.println(servicios.back(500));
 
 
 	}
