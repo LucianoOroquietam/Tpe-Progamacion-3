@@ -16,6 +16,8 @@ public class Main {
 
 		System.out.println(servicios.back(500));
 
+		System.out.println(servicios.greedy(500));
+
 
 	}
 }

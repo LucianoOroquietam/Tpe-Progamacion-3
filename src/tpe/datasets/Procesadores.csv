@@ -1,5 +1,5 @@
-P1;Intel i7-10700K;true;2020
+P1;Intel i7-10700K;false;2020
 P2;AMD Ryzen 5 3600;false;2019
-P3;Intel i9-11900K;true;2021
-P4;AMD Ryzen 7 3700X;true;2019
+P3;Intel i9-11900K;false;2021
+P4;AMD Ryzen 7 3700X;false;2019
 P5;Intel i5-10600K;false;2020

@@ -29,7 +29,6 @@ public class SolucionBacktracking {
 
     }
 
-
     //asigna una tarea a un procesador (solucion parcial)
     public void asignarTarea(Procesador p, Tarea t) {
         // Si ese procesador ya tenia una lista de tareas asignadas, y es asignable, le agrego la tarea
@@ -59,32 +58,33 @@ public class SolucionBacktracking {
         return tiempoMax;
     }
 
-
+    public boolean estaVacia(){
+        for (Procesador p:procesadores) {
+            if (!solucion.get(p).isEmpty()){
+                return false;
+            }
+        }
+       return true;
+    }
     //Comprueba si a un procesador se le puede asignar cierta tarea
     public boolean esValida(int x) {
         for(Procesador p : this.procesadores){
 
             List<Tarea> tareas = this.solucion.get(p);
-            int critCount = 0;
-            int tiempoAcumulado = 0;
+            float tiempoAcumulado = 0;
 
             for(Tarea t : tareas){
 
-                if(t.Es_critica())
-                    critCount++;
-
                 tiempoAcumulado += t.getTiempo_ejecucion();
 
-                if(critCount >= 2)
+                if(t.Es_critica() && getCantCriticas(p) >= 2) {
                     return false;
-
-                if(!p.Esta_refrigerado() && tiempoAcumulado >= x)
+                }
+                if(!p.Esta_refrigerado() && tiempoAcumulado >= x) {
                     return false;
-
+                }
             }
-
         }
-
         return true;
     }
 
@@ -126,9 +126,10 @@ public class SolucionBacktracking {
             for (Tarea tarea : tareas) {
                 sb.append("\t").append(tarea.getId_tarea()).append(" (Tiempo: ").append(tarea.getTiempo_ejecucion()).append(", Crítica: ").append(tarea.Es_critica()).append(")\n");
             }
-            sb.append("Tiempo total de tareas : ").append(calcularTiempoTotal());
-            sb.append("\n");
+
         }
+        sb.append("Tiempo total de tareas : ").append(calcularTiempoTotal());
+        sb.append("\n");
         return sb.toString();
     }
 

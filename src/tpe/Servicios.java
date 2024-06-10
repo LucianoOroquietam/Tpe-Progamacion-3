@@ -2,6 +2,7 @@ package tpe;
 
 import tpe.utils.CSVReader;
 
+import java.sql.SQLOutput;
 import java.util.*;
 
 /**
@@ -19,6 +20,7 @@ public class Servicios {
 	private List<Tarea> tareasCriticas;
 	private List<Tarea> tareasNoCriticas;
 	private SolucionBacktracking mejorSolucionBack;
+	private SolucionGreedy mejorSolucionGreedy;
 	private List<Float>todosLostiempos;
 
 	/*
@@ -41,6 +43,7 @@ public class Servicios {
 		addListaTareas();
 
 		this.mejorSolucionBack = new SolucionBacktracking(this.procesadores);
+		this.mejorSolucionGreedy = new SolucionGreedy(this.procesadores);
 
 
 	}
@@ -104,49 +107,56 @@ public class Servicios {
 	//implementar solucion con backtraking
 
 	public SolucionBacktracking back(int tiempoMaximo){
-		System.out.println("comienzo del Backtracking:");
+		System.out.println("Comienzo del Backtracking: ");
 		int posicion=0;
 		//crear solucion parcial para llamar a la recursividad
 
 		SolucionBacktracking solucionParcial=new SolucionBacktracking(procesadores);
-
 		backtracking(solucionParcial,posicion,tiempoMaximo);
 
-		System.out.println(this.todosLostiempos);
-        return mejorSolucionBack;//devuelve la copia de la solucion parcial
+		System.out.println("Metrica de estados generados: " + this.todosLostiempos);
+		System.out.printf("Cantidad de estados generados: " + this.todosLostiempos.size()+ "\n \n");
+		if (mejorSolucionBack.estaVacia()){
+			System.out.println("No se encontro una solucion a travez de backtracking");
+		}
+        return mejorSolucionBack;//devuelve la solucion
 	}
 
 	private void backtracking(SolucionBacktracking solucion, int posicion, int tiempoMaximo){
-
+		//si es valida comparar con mi mejor solucion
+		//si es mejor q la q tenia, la copio y se vuelve mi mejor solucion
 		if (posicion==listaTareas.size()){//si ya asigne todas mis tareas, empiezo a chequear las soluciones
-
 			if(solucion.esValida(tiempoMaximo)) {
+				todosLostiempos.add(solucion.calcularTiempoTotal());
 				if (solucion.calcularTiempoTotal() < mejorSolucionBack.calcularTiempoTotal() || mejorSolucionBack.calcularTiempoTotal() == 0) {
-
 					this.mejorSolucionBack = solucion.copiarSolucion();
-
 				}
 			}
-			//si es valida comparar con mi mejor solucion
-			//si es mejor q la q tenia, la copio y se vuelve mi mejor solucion
 			return;
 		}
 			for (Procesador p:procesadores) {
-
-
 				solucion.asignarTarea(p,listaTareas.get(posicion));
 				backtracking(solucion,posicion+1,tiempoMaximo);
-				//todosLostiempos.add(solucion.calcularTiempoTotal());
 				solucion.removerTarea(p,listaTareas.get(posicion));
 			}
 
 		}
 
-
-
-
-	public SolucionBacktracking greedy(){
-		return null;
+	public SolucionGreedy greedy(int tiempoMax){
+		for (Tarea tarea:listaTareas) {
+			Procesador p = mejorSolucionGreedy.seleccionarProcesador(tarea,tiempoMax);
+			if (p!=null){
+				mejorSolucionGreedy.asignarTarea(p,tarea);
+			}else {
+				System.out.printf("No se ha encontrado solucion a travez de greedy");
+			}
+		}
+		if (listaTareas.isEmpty()){
+			System.out.println("No se ha encontrado solucion a travez de greedy ya que no hay tareas");
+		}
+		System.out.println("La cantidad de candidatos es: " + mejorSolucionGreedy.getCandidatos().size());
+		System.out.println("Los candidatos son : " + mejorSolucionGreedy.getCandidatos() + "\n");
+		return mejorSolucionGreedy;
 	}
 
 
