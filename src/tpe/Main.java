@@ -6,17 +6,16 @@ public class Main {
 		Servicios servicios = new Servicios("./src/tpe/datasets/Procesadores.csv", "./src/tpe/datasets/Tareas.csv");
 
 
-		//System.out.println(servicios.servicio1("T5"));
-		//System.out.println(servicios.servicio1("T8"));
+		//metodos comentados para que se puedan probar de a uno y verlos de forma mas clara
 
+		//System.out.println(servicios.servicio1("T1"));
 		//System.out.println(servicios.servicio2(false));
 		//System.out.println(servicios.servicio3(1,20));
 
-		//System.out.println(servicios.servicio2(false));
 
-		System.out.println(servicios.back(500));
+		System.out.println(servicios.back(150));
 
-		System.out.println(servicios.greedy(500));
+		System.out.println(servicios.greedy(50));
 
 
 	}

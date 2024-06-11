@@ -37,7 +37,7 @@ public class Servicios {
 		this.todosLostiempos=new ArrayList<>();
 
 		CSVReader reader = new CSVReader();//O
-		procesadores.addAll(reader.readProcessors(pathProcesadores));//O(p)
+		procesadores.addAll(reader.readProcessors(pathProcesadores));
 		tareas.putAll(reader.readTasks(pathTareas));
 		addCriticasyNocriticas(tareas);
 		addListaTareas();
@@ -67,7 +67,7 @@ public class Servicios {
 	}
 	
 	/*
-     * Expresar la complejidad temporal del servicio 1.
+     * Complejidad O(1) ya que le damos un id especifico para traer la tarea
      */
 	public Tarea servicio1(String ID) {//O(1)
 		if(tareas.containsKey(ID)) {
@@ -77,8 +77,7 @@ public class Servicios {
     }
     
     /*
-     * //o(1)
-     * donde si es critica o no critica directamente la retorna
+     * Complejidad O(1) donde si es critica o no critica directamente la retorna
      */
 	public List<Tarea> servicio2(boolean esCritica) {
 
@@ -89,7 +88,7 @@ public class Servicios {
     }
 
     /*
-     * o(n)
+     * o(n) donde n es la cantidad de tareas.
      */
 	public List<Tarea> servicio3(int prioridadInferior, int prioridadSuperior) {
 
@@ -104,9 +103,16 @@ public class Servicios {
         return tareasBuscadas;
     }
 
-	//implementar solucion con backtraking
-
+	/**
+	 * Explicacion Backtracking publico
+	 * @param tiempoMaximo
+	 * creamos el estado inicial de backtracking (Posicion=0) y una solucion parcial
+	 * estos atributos los pasamos como parametros al metodo recursivo del back junto con el tiempoMaximo.
+	 *una vez el metodo recursivo finaliza, se retorna la mejor solucion encontrada
+	 * @return MejorSolucionBack
+	 */
 	public SolucionBacktracking back(int tiempoMaximo){
+
 		System.out.println("Comienzo del Backtracking: ");
 		int posicion=0;
 		//crear solucion parcial para llamar a la recursividad
@@ -121,6 +127,19 @@ public class Servicios {
 		}
         return mejorSolucionBack;//devuelve la solucion
 	}
+
+	/**
+	 *Explicacion Backtracking privado
+	 * @param solucion
+	 * @param posicion
+	 * @param tiempoMaximo
+	 * por cada procesador iremos asignando distintas combinaciones de tareas a travez de la recursion.
+	 * cada vez q asignamos una tarea a un procesador, llamamos recursivamente sumando 1 a la pocision de la lista para
+	 * que haya condicion de corte, es decir q una vez q se hayan asignado todas las tareas esa solucion estara finalizada.
+	 * por lo q se procede a chequear si la solucion es valida, (cumple con requisitos expresos en la consigna del TPE)
+	 * si es valida, se compara el tiempo que tarda en darse esa solucion con la mejor solucion que tengamos guardada hasta el momento,
+	 * en caso de que esta sea la primera, si el tiempo total de la mejor solucion es 0, entra al if y se guarda como mejor solucion actual
+	 */
 
 	private void backtracking(SolucionBacktracking solucion, int posicion, int tiempoMaximo){
 		//si es valida comparar con mi mejor solucion
@@ -142,20 +161,37 @@ public class Servicios {
 
 		}
 
+	/**
+	 * Explicacion Greedy
+	 * @param tiempoMax
+	 * recibe como parametro el tiempo maximo que un procesador puede funcionar si no esta refrigerado
+	 * por cada tarea buscamos el mejor procesador posible, para esto chequeamos que el procesador cumpla con los requisitos.
+	 * se guarda un candidato de procesador para esa tarea y se chequea si hay algun otro procesador que ademas de cumplir con los requisitos
+	 * tenga mas tiempo libre que el candidato, si es encontrado entonces este se vuelve el procesador asignado final para esa tarea.
+	 * este proceso se repite para todas las tareas
+	 * @return SolucionGreedy
+	 */
+
 	public SolucionGreedy greedy(int tiempoMax){
+
+		boolean error=false;
+
+		System.out.println("Comienzo de Greedy");
 		for (Tarea tarea:listaTareas) {
 			Procesador p = mejorSolucionGreedy.seleccionarProcesador(tarea,tiempoMax);
 			if (p!=null){
 				mejorSolucionGreedy.asignarTarea(p,tarea);
 			}else {
-				System.out.printf("No se ha encontrado solucion a travez de greedy");
+				error=true;
 			}
+		}
+		if (error){
+			System.out.println("No se ha encontrado solucion a travez de greedy");
 		}
 		if (listaTareas.isEmpty()){
 			System.out.println("No se ha encontrado solucion a travez de greedy ya que no hay tareas");
 		}
-		System.out.println("La cantidad de candidatos es: " + mejorSolucionGreedy.getCandidatos().size());
-		System.out.println("Los candidatos son : " + mejorSolucionGreedy.getCandidatos() + "\n");
+		System.out.println("La cantidad de candidatos es: " + mejorSolucionGreedy.getCantCandidatos());
 		return mejorSolucionGreedy;
 	}
 
