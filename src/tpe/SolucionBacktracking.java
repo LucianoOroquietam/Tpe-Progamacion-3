@@ -36,10 +36,10 @@ public class SolucionBacktracking extends Solucion{
 
                 tiempoAcumulado += t.getTiempo_ejecucion();
 
-                if(t.Es_critica() && getCantCriticas(p) >= 2) {
+                if(t.Es_critica() && getCantCriticas(p) > 2) {
                     return false;
                 }
-                if(!p.Esta_refrigerado() && tiempoAcumulado >= x) {
+                if(!p.Esta_refrigerado() && tiempoAcumulado > x) {
                     return false;
                 }
             }

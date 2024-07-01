@@ -1,7 +1,6 @@
-T1;Revisar código de seguridad;60;true;95
-T2;Actualizar base de datos de clientes;45;false;20
-T3;Implementar sistema de autenticación;120;true;100
-T4;Optimizar consultas SQL;80;true;90
-T5;Configurar servidor de pruebas;30;false;15
-T6;Desarrollar funcionalidad de reporte;100;false;85
-T7;Desarrollar funcionalidad de Borrado;87;false;60
+T1;Tarea1;90;false;92
+T2;Tarea2;15;true;31
+T3;Tarea3;80;false;70
+T4;Tarea4;20;true;58
+T5;Tarea5;15;true;1
+T6;Tarea6;10;true;31

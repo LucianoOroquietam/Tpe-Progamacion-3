@@ -145,8 +145,9 @@ public class Servicios {
 		//si es valida comparar con mi mejor solucion
 		//si es mejor q la q tenia, la copio y se vuelve mi mejor solucion
 		if (posicion==listaTareas.size()){//si ya asigne todas mis tareas, empiezo a chequear las soluciones
+			todosLostiempos.add(solucion.calcularTiempoTotal());
 			if(solucion.esValida(tiempoMaximo)) {
-				todosLostiempos.add(solucion.calcularTiempoTotal());
+
 				if (solucion.calcularTiempoTotal() < mejorSolucionBack.calcularTiempoTotal() || mejorSolucionBack.calcularTiempoTotal() == 0) {
 					this.mejorSolucionBack = solucion.copiarSolucion();
 				}
