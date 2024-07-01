@@ -22,6 +22,7 @@ public class Servicios {
 	private SolucionBacktracking mejorSolucionBack;
 	private SolucionGreedy mejorSolucionGreedy;
 	private List<Float>todosLostiempos;
+	private float mejorTiempo;
 
 	/*
 	 * Complejidad O(n) n siendo la cantidad de tareas y procesadores
@@ -145,10 +146,11 @@ public class Servicios {
 		//si es valida comparar con mi mejor solucion
 		//si es mejor q la q tenia, la copio y se vuelve mi mejor solucion
 		if (posicion==listaTareas.size()){//si ya asigne todas mis tareas, empiezo a chequear las soluciones
-			todosLostiempos.add(solucion.calcularTiempoTotal());
+			float tiempoActual=solucion.calcularTiempoTotal();
+			todosLostiempos.add(tiempoActual);
 			if(solucion.esValida(tiempoMaximo)) {
-
-				if (solucion.calcularTiempoTotal() < mejorSolucionBack.calcularTiempoTotal() || mejorSolucionBack.calcularTiempoTotal() == 0) {
+				mejorTiempo=mejorSolucionBack.calcularTiempoTotal();
+				if (tiempoActual < mejorTiempo || mejorTiempo == 0) {
 					this.mejorSolucionBack = solucion.copiarSolucion();
 				}
 			}
