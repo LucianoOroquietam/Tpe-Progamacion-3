@@ -22,7 +22,6 @@ public abstract class Solucion {
 
     //asigna una tarea a un procesador (solucion parcial)
     public void asignarTarea(Procesador p, Tarea t) {
-        // Si ese procesador ya tenia una lista de tareas asignadas, y es asignable, le agrego la tarea
         solucion.get(p).add(t);
     }
 

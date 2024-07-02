@@ -157,9 +157,9 @@ public class Servicios {
 			return;
 		}
 			for (Procesador p:procesadores) {
-				solucion.asignarTarea(p,listaTareas.get(posicion));
-				backtracking(solucion,posicion+1,tiempoMaximo);
-				solucion.removerTarea(p,listaTareas.get(posicion));
+					solucion.asignarTarea(p,listaTareas.get(posicion));
+					backtracking(solucion, posicion + 1, tiempoMaximo);
+					solucion.removerTarea(p, listaTareas.get(posicion));
 			}
 
 		}
